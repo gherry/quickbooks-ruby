@@ -7,6 +7,7 @@ module Quickbooks
       SUB_TOTAL_LINE_DETAIL = 'SubTotalLineDetail'
       PAYMENT_LINE_DETAIL = 'PaymentLineDetail'
       DISCOUNT_LINE_DETAIL = 'DiscountLineDetail'
+      DESCRIPTION_LINE_DETAIL = 'DescriptionLineDetail'
 
       xml_accessor :id, :from => 'Id', :as => Integer
       xml_accessor :line_num, :from => 'LineNum', :as => Integer
@@ -19,6 +20,7 @@ module Quickbooks
       xml_accessor :sub_total_line_detail, :from => 'SubTotalLineDetail', :as => SubTotalLineDetail
       xml_accessor :payment_line_detail, :from => 'PaymentLineDetail', :as => PaymentLineDetail
       xml_accessor :discount_line_detail, :from => 'DiscountLineDetail', :as => DiscountLineDetail
+      xml_accessor :description_line_detail, :from => 'DescriptionLineDetail', :as => DiscountLineDetail
 
       def sales_item?
         detail_type.to_s == SALES_LINE_ITEM_DETAIL
@@ -30,6 +32,10 @@ module Quickbooks
 
       def discount_item?
         detail_type.to_s == DISCOUNT_LINE_DETAIL
+      end
+
+      def description_item?
+        detail_type.to_s == DESCRIPTION_LINE_DETAIL
       end
 
       def sales_item!
@@ -53,6 +59,12 @@ module Quickbooks
         yield self.discount_line_detail if block_given?
       end
 
+      def description_item!
+        self.detail_type = "DescriptionOnly"
+        self.description_line_detail = DescriptionLineDetail.new
+
+        yield self.description_line_detail if block_given?
+      end
     end
   end
 end
