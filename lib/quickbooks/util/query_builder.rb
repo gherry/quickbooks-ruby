@@ -16,10 +16,12 @@ module Quickbooks
                 when Date
                   value.strftime('%Y-%m-%d')
                 when Array
-                  value = value.map{|v| v.to_s.gsub("'", "\\\\'") }
+                  value.map{|v| v.to_s.gsub("'", "\\\\'") }
+                when TrueClass, FalseClass, Fixnum
+                  value.to_s
                 else
                   # escape single quotes with an escaped backslash
-                  value = value.gsub("'", "\\\\'")
+                  value.gsub("'", "\\\\'")
                 end
 
         if operator.downcase == 'in' && value.is_a?(Array)
