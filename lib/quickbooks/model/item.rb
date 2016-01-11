@@ -16,6 +16,10 @@ module Quickbooks
       SERVICE_TYPE = 'Service'
       ITEM_TYPES = [INVENTORY_TYPE, NON_INVENTORY_TYPE, SERVICE_TYPE]
 
+      FR_PRODUCT_ITEM_CATEGORY_TYPE = "Product"
+      FR_SERVICE_ITEM_CATEGORY_TYPE = "Service"
+      FR_ITEM_CATEGORY_TYPES = [nil, FR_PRODUCT_ITEM_CATEGORY_TYPE, FR_SERVICE_ITEM_CATEGORY_TYPE]
+
       xml_name 'Item'
       xml_accessor :id, :from => 'Id', :as => Integer
       xml_accessor :sync_token, :from => 'SyncToken', :as => Integer
@@ -26,6 +30,7 @@ module Quickbooks
       xml_accessor :sub_item?, :from => 'SubItem'
       xml_accessor :parent_ref, :from => 'ParentRef', :as => Integer
       xml_accessor :level, :from => 'Level', :as => Integer
+      xml_accessor :item_category_type, :from => 'ItemCategoryType'
 
       # read-only
       xml_accessor :fully_qualified_name, :from => 'FullyQualifiedName'
@@ -52,6 +57,7 @@ module Quickbooks
       #== Validations
       validates_length_of :name, :minimum => 1
       validates_inclusion_of :type, :in => ITEM_TYPES
+      validates_inclusion_of :item_category_type, :in => FR_ITEM_CATEGORY_TYPES
 
       def initialize(*args)
         self.type = INVENTORY_TYPE
