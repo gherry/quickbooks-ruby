@@ -251,6 +251,8 @@ module Quickbooks
           raise Quickbooks::AuthorizationFailure
         when 403
           raise Quickbooks::Forbidden
+        when 429
+          raise Quickbooks::TooManyRequests
         when 400, 500
           parse_and_raise_exception(options)
         when 503, 504
