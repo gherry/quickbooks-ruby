@@ -183,4 +183,5 @@ module Quickbooks
     end
   end
 
+  class TooManyRequests < StandardError; end
 end
